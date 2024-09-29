@@ -6,15 +6,19 @@ import { useQuery } from '@tanstack/react-query'
 import { getSummary } from './http/get-summary'
 
 export function App() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['summary'],
     queryFn: getSummary,
-    staleTime: 1000 * 60
+    staleTime: 1000 * 60,
   })
+
+  if (isLoading) {
+    return <p>Carregando...</p>
+  }
 
   return (
     <Dialog>
-      {data?.total && data.total > 0 ? <Summary/> : <EmptyGoals />}
+      {data?.total && data.total > 0 ? <Summary /> : <EmptyGoals />}
 
       <CreateGoals />
     </Dialog>
